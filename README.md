@@ -1,5 +1,5 @@
 # KitPvP-Reforged
-Advanced KitPvP plugin for Spigot/Paper with PAPI &amp; Vault support.
+Advanced KitPvP plugin for Spigot/Paper, requires PAPI and supports Vault.
 If you like the project and want to support it please leave a star on the GitHub page!
 
 # Permissions
