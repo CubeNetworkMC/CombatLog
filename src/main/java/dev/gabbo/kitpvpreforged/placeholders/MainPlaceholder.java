@@ -55,7 +55,7 @@ public class MainPlaceholder extends PlaceholderExpansion
         String number = String.format("%,d", value);
         String[] commas = new String[] { "K", "M", "B", "T", "Q" };
 
-        String[] split = number.split(",");
+        String[] split = number.split("\\.");
         if (split.length == 1)
         {
             return String.valueOf(value);
