@@ -1,0 +1,56 @@
+bounties:
+  bounty-claimed: "&c%killer% &7ha riscattato la taglia di &b%player% &7da &6&l$%bounty%&7."
+  bounty-set: "&7Impostata una taglia di &6&l$%bounty% &7su &b%player%&7."
+
+spawn:
+  no-permission: "&cNon hai il permesso necessario per eseguire questa azione."
+  no-spawn-found: "&cIl punto di spawn non è stato trovato, contatta gli amministratori del server."
+
+anti-build:
+  build-mode-on: "&7Modalità costruzione &aattivata&7."
+  build-mode-off: "&7Modalità costruzione &cdisattivata&7."
+
+combat:
+  command-disabled: "&cNon puoi eseguire questo comando durante il combattimento."
+
+stats:
+  no-permission: "&cNon hai il permesso necessario per eseguire questa azione."
+  usage-player: "&c/stats <giocatore>"
+  not-found: "&cIl giocatore richiesto non è stato trovato."
+  kills-edited: "&7Uccisioni modificate per &7%player%."
+  deaths-edited: "&7Morti modificate per &7%player%."
+  streak-edited: "&7Streak modificata per &7%player%."
+  broadcast-streak: "&a%player% &7ha raggiunto una serie di uccisioni pari a &c%streak%&7!"
+
+drop-settings:
+  enabled: "&7Attivato &8» &a%enabled%"
+
+kills:
+  default-death: "&b%player% &7è morto."
+  death:
+    - "&c%killer% &7ha squartato &b%player%"
+    - "&c%killer% &7ha usato la radice quadrata di 2 per uccidere &b%player%"
+    - "&b%player% &7è stato mangiato da &c%killer%"
+    - "&b%player% &7è diventato un ippopotamo grazie a &7%killer%"
+  assist: "&7Hai aiutato ad uccidere &c%player% &7e hai guadagnato &a$50&7."
+  kill: "&7Hai ucciso &c%player% &7e hai guadagnato &a$200&7."
+
+admin:
+  no-sub-command-found: "&cNon è stato trovato alcun sotto comando con questo nome."
+  malformed-command: "&cUso del comando non corretto, per maggiori informazioni esegui /kitpvp."
+  new-spawn-set: "&7Nuovo punto di spawn impostato."
+  player-not-found: "&cIl giocatore richiesto non è stato trovato."
+  no-permission: "&cNon hai il permesso necessario per eseguire questa azione."
+  stats-edited: "&7Statistiche per il giocatore &e%player% &7modificate correttamente."
+  plugin-reloaded: "&7Configurazione ricaricata correttamente."
+  bounty-edited: "&7Impostata una taglia di &6&l%bounty% &7su &a%player%&7."
+  help-command:
+    - "&bKitPvP Reforged"
+    - ""
+    - "&b/kitpvp reload &7- &fRicarica la configurazione del plugin"
+    - "&b/kitpvp setstats <kills/deaths/streak> <player> <value> &7- &fImposta le statistiche di un giocatore"
+    - "&b/kitpvp setbounty <player> <value> &7- &fImposta la taglia di un giocatore"
+    - "&b/kitpvp setspawn &7- &fImposta il punto di spawn"
+    - "&b/kitpvp build &7- &fAttiva/disattiva modalità costruzione"
+    - "&b/kitpvp alert <messaggio> &7- &fInvia una messaggio a tutti i giocatori"
+    - ""

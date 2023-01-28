@@ -1,0 +1,114 @@
+spawn-location:
+
+combat:
+  # The amount of time to wait before being able to execute the commands again and leave the server
+  timer: 15.0
+
+  # All the commands allowed in combat
+  allowed-commands:
+    - /r
+    - /msg
+    - /w
+
+  # All the worlds where combat is disabled
+  disabled-in-worlds:
+    - disabled-world
+
+ender-pearl:
+  # The amount of time to wait before being able to throw another ender pearl
+  timer: 15.0
+
+tab-list:
+  # If we should enable the TAB list, supports PlaceholderAPI
+  enabled: false
+
+  # The upper part of the TAB list
+  header:
+    - " "
+    - " &b&lKITPVP"
+    - " "
+    - " &fOnline &7» &b%online% &8- &fPing &7» &b%ping%"
+    - " "
+
+  # The lower part of the TAB list
+  footer:
+    - " "
+    - " &fDiscord &7» &bdsc.gg/randomgang "
+    - " &fAuthor &7» &b@ImGqbbo#9549 "
+    - " "
+
+on-join:
+  # If when inventory of the player joined is empty then we should give him a kit
+  give-kit: true
+
+  # The command to execute to give the kit
+  kit-command: "kit %player% base"
+
+on-death:
+  # All the commands to execute when a player die
+  commands:
+    - 'kit base %player%'
+
+  # The amount of money to give to the killer
+  money-killer: 200
+
+  # If we should give the killer an effect after killing another player
+  give-effect: true
+
+  # The name of the effect to give
+  effect-name: "regeneration"
+
+  # The strength of the effect, starts from 0
+  effect-strength: 3
+
+  # The time that the effect should stay, in seconds
+  effect-time: 5
+
+  # The amount of money to give to the assister
+  money-assist: 50
+
+axe:
+  # The amount of damage to deal to the armor
+  increment: 3
+
+block-manager:
+  # The time that the blocking block must remain
+  block-timer: 20.0
+
+  # The time that the web block must remain
+  web-timer: 20.0
+
+  # The type of the blocking block
+  blocking-block: OBSIDIAN
+
+  # The whitelisted blocks to place
+  whitelisted-blocks:
+    - OBSIDIAN
+    - WEB
+
+streak:
+  # After how many kills a streak will be counted
+  threshold: 5
+
+  # If we should give an item every streak
+  give-item: true
+
+  # The item name to give
+  item-name: DIAMOND
+
+no-fall:
+  # The height of the spawn
+  spawn-height: 170
+
+bounties:
+  # The chance of getting the bounty
+  chance: 40
+
+  # The minimum bounty
+  minimum: 8
+
+  # The maximum bounty
+  maximum: 13
+
+  # The bounty multiplier
+  multiplier: 100

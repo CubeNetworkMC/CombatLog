@@ -1,0 +1,18 @@
+name: KitPvP-Reforged
+version: '${project.version}'
+main: dev.gabbo.kitpvpreforged.KitPvP
+authors: [ ImGqbbo ]
+description: Advanced KitPvP plugin for Spigot 1.8
+softdepend: [ PlaceholderAPI ]
+commands:
+  kitpvp:
+    description: Main command for everything
+    aliases: [ kp, kitpvpreforged, kpreforged]
+  stats:
+    description: Public command to see player statistics
+    aliases: [ kpstats, statistics, playerstats ]
+  spawn:
+    description: Teleport player to spawn
+  dropsettings:
+    description: Command to manage the pickup settings
+    aliases: [ drops, drop-settings ]
