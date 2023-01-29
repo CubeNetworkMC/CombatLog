@@ -1,8 +1,8 @@
-name: KitPvP-Reforged
+name: zKitPvP
 version: '${project.version}'
-main: dev.gabbo.kitpvpreforged.KitPvP
+main: dev.gabbo.zkitpvp.KitPvP
 authors: [ ImGqbbo ]
-description: Advanced KitPvP plugin for Spigot 1.8
+description: KitPvP plugin for Spigot/Paper servers
 softdepend: [ PlaceholderAPI ]
 commands:
   kitpvp:

@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 
 public final class KitPvP extends JavaPlugin {
+
     @Override
     public void onEnable() {
         instance = this;
