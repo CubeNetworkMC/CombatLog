@@ -491,6 +491,9 @@ public class PlayerListener implements Listener {
         data.enderTimestamp = 0;
         data.combatTimestamp = 0;
 
+        data.enderTimer = 0;
+        data.combatTimer = 0;
+
         KitPvP.getDataManager().updateData(data);
     }
 
