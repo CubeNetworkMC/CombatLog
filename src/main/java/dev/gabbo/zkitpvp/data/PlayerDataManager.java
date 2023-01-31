@@ -39,9 +39,9 @@ public class PlayerDataManager {
 
     public void updateData(PlayerData data) {
         if (data == null) return;
-        //PlayerData playerData = filter(playerDataList, data.getPlayer());
+        PlayerData playerData = filter(playerDataList, data.getPlayer());
 
-        playerDataList.remove(data);
+        playerDataList.remove(playerData);
         playerDataList.add(data);
     }
 
