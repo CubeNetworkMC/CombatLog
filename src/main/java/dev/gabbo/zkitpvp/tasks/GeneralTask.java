@@ -15,40 +15,40 @@ public class GeneralTask extends BukkitRunnable {
 
         for (int i = 0; i < KitPvP.getDataManager().getAllData().size(); i++) {
             PlayerData data = KitPvP.getDataManager().getAllData().get(i);
-            if (data == null) return;
+            if (data != null) {
+                if (data.combatTimestamp != 0) {
+                    long time = (long) (data.combatTimestamp + (combatTimer * 1000L));
+                    long now = System.currentTimeMillis();
 
-            if (data.combatTimestamp != 0) {
-                long time = (long) (data.combatTimestamp + (combatTimer * 1000L));
-                long now = System.currentTimeMillis();
+                    long millis = time - now;
+                    if (millis > 0) {
+                        data.combatTimer = millis;
+                    }
+                    else {
+                        data.combatTimer = 0;
+                        data.combatTimestamp = 0;
+                    }
+                }
 
-                long millis = time - now;
-                if (millis > 0) {
-                    data.combatTimer = millis;
+                if (data.enderTimestamp != 0) {
+                    long time = (long) (data.enderTimestamp + (enderTimer * 1000L));
+                    long now = System.currentTimeMillis();
+
+                    long millis = time - now;
+                    if (millis > 0) {
+                        data.combatTimer = millis;
+                    }
+                    else {
+                        data.combatTimer = 0;
+                        data.combatTimestamp = 0;
+                    }
                 }
-                else {
-                    data.combatTimer = 0;
-                    data.combatTimestamp = 0;
-                }
+
+                data.inEnderCooldown = data.enderTimestamp != 0;
+                data.inCombat = data.combatTimestamp != 0;
+
+                KitPvP.getDataManager().updateData(data);
             }
-
-            if (data.enderTimestamp != 0) {
-                long time = (long) (data.enderTimestamp + (enderTimer * 1000L));
-                long now = System.currentTimeMillis();
-
-                long millis = time - now;
-                if (millis > 0) {
-                    data.combatTimer = millis;
-                }
-                else {
-                    data.combatTimer = 0;
-                    data.combatTimestamp = 0;
-                }
-            }
-
-            data.inEnderCooldown = data.enderTimestamp != 0;
-            data.inCombat = data.combatTimestamp != 0;
-
-            KitPvP.getDataManager().updateData(data);
         }
     }
 

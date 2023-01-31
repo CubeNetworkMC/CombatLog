@@ -7,7 +7,7 @@ softdepend: [ PlaceholderAPI ]
 commands:
   kitpvp:
     description: Main command for everything
-    aliases: [ kp, kitpvpreforged, kpreforged]
+    aliases: [ kp, zkitpvp ]
   stats:
     description: Public command to see player statistics
     aliases: [ kpstats, statistics, playerstats ]

@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDataManager {
-    public PlayerDataManager() {
-        playerDataList = new ArrayList<>();
-    }
 
     public PlayerData getPlayerData(String player) {
         PlayerData data = filter(playerDataList, player);
@@ -42,11 +39,11 @@ public class PlayerDataManager {
 
     public void updateData(PlayerData data) {
         if (data == null) return;
-        PlayerData playerData = filter(playerDataList, data.getPlayer());
+        //PlayerData playerData = filter(playerDataList, data.getPlayer());
 
-        playerDataList.remove(playerData);
+        playerDataList.remove(data);
         playerDataList.add(data);
     }
 
-    List<PlayerData> playerDataList;
+    List<PlayerData> playerDataList = new ArrayList<>();
 }

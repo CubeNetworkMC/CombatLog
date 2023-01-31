@@ -70,9 +70,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPotionDrank(PlayerItemConsumeEvent event) {
         ItemStack item = event.getItem();
-        if (!item.getType().equals(Material.POTION)) {
-            return;
-        }
+        if (!item.getType().equals(Material.POTION)) return;
 
         Inventory inventory = event.getPlayer().getInventory();
         Bukkit.getScheduler().runTaskLater(KitPvP.getInstance(), () -> inventory.remove(Material.GLASS_BOTTLE), 1L);
@@ -81,9 +79,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
         Inventory inventory = event.getInventory();
-        if (!(inventory instanceof EnchantingInventory)) {
-            return;
-        }
+        if (!(inventory instanceof EnchantingInventory)) return;
 
         inventory.setItem(1, getLapis());
     }
@@ -107,9 +103,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
-        if (!(inventory instanceof EnchantingInventory)) {
-            return;
-        }
+        if (!(inventory instanceof EnchantingInventory)) return;
 
         inventory.setItem(1, null);
     }
@@ -128,21 +122,15 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerAxe(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
-            return;
-        }
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) return;
 
         Player damaged = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
 
         ItemStack hand = damager.getItemInHand();
-        if (hand == null) {
-            return;
-        }
+        if (hand == null) return;
 
-        if (!hand.getType().toString().contains("AXE")) {
-            return;
-        }
+        if (!hand.getType().toString().contains("AXE")) return;
 
         int damage = KitPvP.getFileManager().getConfig().getInt("axe.increment");
 
@@ -159,9 +147,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onSpawnDamage(EntityDamageEvent event) {
         int height = KitPvP.getFileManager().getConfig().getInt("no-fall.spawn-height");
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
+        if (!(event.getEntity() instanceof Player)) return;
 
         Player player = (Player) event.getEntity();
         if (player.getLocation().getY() >= height) {
@@ -170,9 +156,7 @@ public class PlayerListener implements Listener {
         }
 
         PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
-        if (!data.atSpawn) {
-            return;
-        }
+        if (!data.atSpawn) return;
 
         if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
             data.atSpawn = false;
@@ -190,9 +174,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onAnvilBroke(BlockDamageEvent event) {
         Block block = event.getBlock();
-        if (!block.getType().equals(Material.ANVIL)) {
-            return;
-        }
+        if (!block.getType().equals(Material.ANVIL)) return;
 
         event.setCancelled(true);
     }
@@ -200,13 +182,10 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
-        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
             return;
-        }
 
         Player player = event.getPlayer();
         switch (item.getType()) {
@@ -257,9 +236,7 @@ public class PlayerListener implements Listener {
             damager = (Entity) ((Projectile) damager).getShooter();
         }
 
-        if (!(damager instanceof Player)) {
-            return;
-        }
+        if (!(damager instanceof Player)) return;
 
         if (entity.getHealth() - event.getFinalDamage() > 0) {
             updateData(entity);
@@ -291,22 +268,16 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDamagePlayer(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
+        if (!(event.getEntity() instanceof Player)) return;
 
         Player entity = (Player) event.getEntity();
         if (damager instanceof Projectile) {
             damager = (Entity) ((Projectile) damager).getShooter();
         }
 
-        if (!(damager instanceof Player)) {
-            return;
-        }
+        if (!(damager instanceof Player)) return;
 
-        if (damager.equals(entity)) {
-            return;
-        }
+        if (damager.equals(entity)) return;
 
         Player attacker = (Player) damager;
         PlayerData data = KitPvP.getDataManager().getPlayerData(entity.getUniqueId().toString());
@@ -418,9 +389,7 @@ public class PlayerListener implements Listener {
         int chance = KitPvP.getFileManager().getConfig().getInt("bounties.chance");
         int chosen = random.nextInt(100);
 
-        if (chosen > chance) {
-            return;
-        }
+        if (chosen > chance) return;
 
         int minimum = KitPvP.getFileManager().getConfig().getInt("bounties.minimum");
         int maximum = KitPvP.getFileManager().getConfig().getInt("bounties.maximum");
@@ -519,8 +488,8 @@ public class PlayerListener implements Listener {
         data.atSpawn = true;
         data.inCombat = false;
 
-        data.enderTimestamp = -1;
-        data.combatTimestamp = -1;
+        data.enderTimestamp = 0;
+        data.combatTimestamp = 0;
 
         KitPvP.getDataManager().updateData(data);
     }
