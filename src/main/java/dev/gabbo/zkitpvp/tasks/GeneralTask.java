@@ -6,8 +6,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class GeneralTask extends BukkitRunnable {
 
-    private final double combatTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
-    private final double enderTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
+    public static final double combatTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
+    public static final double enderTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
 
     @Override
     public void run() {
@@ -37,16 +37,16 @@ public class GeneralTask extends BukkitRunnable {
 
                 long millis = time - now;
                 if (millis > 0) {
-                    data.combatTimer = millis;
+                    data.enderTimer = millis;
                 }
                 else {
-                    data.combatTimer = 0;
-                    data.combatTimestamp = 0;
+                    data.enderTimer = 0;
+                    data.enderTimestamp = 0;
                 }
             }
 
-            data.inEnderCooldown = data.enderTimestamp != 0;
-            data.inCombat = data.combatTimestamp != 0;
+            data.inEnderCooldown = data.enderTimer != 0;
+            data.inCombat = data.combatTimer != 0;
 
             KitPvP.getDataManager().updateData(data);
         }

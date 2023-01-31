@@ -4,6 +4,7 @@ import dev.gabbo.zkitpvp.KitPvP;
 import dev.gabbo.zkitpvp.events.BountyClaimEvent;
 import dev.gabbo.zkitpvp.data.PlayerData;
 import dev.gabbo.zkitpvp.events.KillStreakEvent;
+import dev.gabbo.zkitpvp.tasks.GeneralTask;
 import dev.gabbo.zkitpvp.utils.ChatUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -216,7 +217,6 @@ public class PlayerListener implements Listener {
                     event.setCancelled(true);
                     return;
                 }
-
 
                 data.inEnderCooldown = true;
                 data.enderTimestamp = System.currentTimeMillis();
@@ -485,14 +485,14 @@ public class PlayerListener implements Listener {
         Bukkit.getPluginManager().callEvent(new PlayerRespawnEvent(entity, spawn, false));
         Bukkit.getScheduler().runTaskLater(KitPvP.getInstance(), () -> entity.setFireTicks(0), 1L);
 
-        data.atSpawn = true;
-        data.inCombat = false;
-
         data.enderTimestamp = 0;
         data.combatTimestamp = 0;
 
         data.enderTimer = 0;
         data.combatTimer = 0;
+
+        data.atSpawn = true;
+        data.inCombat = false;
 
         KitPvP.getDataManager().updateData(data);
     }
