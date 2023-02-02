@@ -1,4 +1,4 @@
-#zKitPvP
+# zKitPvP
 Advanced KitPvP plugin for Spigot/Paper servers, requires PAPI & Vault.
 If you like the project and want to support it please leave a star on the GitHub page!
 
