@@ -17,36 +17,16 @@ public class GeneralTask extends BukkitRunnable {
             PlayerData data = KitPvP.getDataManager().getAllData().get(i);
             if (data == null) return;
 
-            if (data.combatTimestamp != 0) {
-                long time = (long) (data.combatTimestamp + (combatTimer * 1000L));
-                long now = System.currentTimeMillis();
+            long current = System.currentTimeMillis();
 
-                long millis = time - now;
-                if (millis > 0) {
-                    data.combatTimer = millis;
-                }
-                else {
-                    data.combatTimer = 0;
-                    data.combatTimestamp = 0;
-                }
-            }
+            long combatTimestamp = data.endCombatTimestamp;
+            long combatDiff = combatTimestamp - current;
 
-            if (data.enderTimestamp != 0) {
-                long time = (long) (data.enderTimestamp + (enderTimer * 1000L));
-                long now = System.currentTimeMillis();
+            long enderTimestamp = data.endEnderTimestamp;
+            long enderDiff = enderTimestamp - current;
 
-                long millis = time - now;
-                if (millis > 0) {
-                    data.enderTimer = millis;
-                }
-                else {
-                    data.enderTimer = 0;
-                    data.enderTimestamp = 0;
-                }
-            }
-
-            data.inEnderCooldown = data.enderTimer != 0;
-            data.inCombat = data.combatTimer != 0;
+            data.inCombat = combatDiff > 0;
+            data.inEnderCooldown = enderDiff > 0;
 
             KitPvP.getDataManager().updateData(data);
         }

@@ -1,14 +1,15 @@
 package dev.gabbo.zkitpvp;
 
+import dev.gabbo.zkitpvp.blocks.BlockListener;
+import dev.gabbo.zkitpvp.blocks.BlockTask;
 import dev.gabbo.zkitpvp.commands.impl.DropSettingsCommand;
 import dev.gabbo.zkitpvp.commands.impl.MainCommand;
 import dev.gabbo.zkitpvp.commands.impl.SpawnCommand;
+import dev.gabbo.zkitpvp.data.PlayerDataManager;
 import dev.gabbo.zkitpvp.inventory.InventoryListener;
-import dev.gabbo.zkitpvp.listeners.*;
+import dev.gabbo.zkitpvp.listeners.PlayerListener;
 import dev.gabbo.zkitpvp.placeholders.MainPlaceholder;
 import dev.gabbo.zkitpvp.tablist.TabUpdater;
-import dev.gabbo.zkitpvp.tasks.BlockTask;
-import dev.gabbo.zkitpvp.data.PlayerDataManager;
 import dev.gabbo.zkitpvp.tasks.GeneralTask;
 import dev.gabbo.zkitpvp.tasks.SaveTask;
 import dev.gabbo.zkitpvp.utils.FileManager;

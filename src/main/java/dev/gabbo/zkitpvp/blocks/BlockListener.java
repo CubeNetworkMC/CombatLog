@@ -1,8 +1,7 @@
-package dev.gabbo.zkitpvp.listeners;
+package dev.gabbo.zkitpvp.blocks;
 
 import dev.gabbo.zkitpvp.KitPvP;
 import dev.gabbo.zkitpvp.data.PlayerData;
-import dev.gabbo.zkitpvp.api.ReforgedBlock;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,7 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -45,7 +45,7 @@ public class BlockListener implements Listener {
             int cooldown = KitPvP.getFileManager().getConfig().getInt("block-manager.block-timer");
 
             block.setType(Material.valueOf(blocker));
-            ReforgedBlock reforgedBlock = new ReforgedBlock(block, cooldown);
+            TempBlock reforgedBlock = new TempBlock(block, cooldown);
 
             KitPvP.getBlockManager().addBlock(reforgedBlock);
             return;
@@ -61,12 +61,12 @@ public class BlockListener implements Listener {
             }
 
             clone.setType(Material.WEB);
-            ReforgedBlock reforgedBlock = new ReforgedBlock(clone, cooldown);
+            TempBlock reforgedBlock = new TempBlock(clone, cooldown);
 
             KitPvP.getBlockManager().addBlock(reforgedBlock);
         });
 
-        ReforgedBlock reforgedBlock = new ReforgedBlock(block, cooldown);
+        TempBlock reforgedBlock = new TempBlock(block, cooldown);
 
         KitPvP.getBlockManager().addBlock(reforgedBlock);
     }

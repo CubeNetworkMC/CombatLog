@@ -1,9 +1,9 @@
-package dev.gabbo.zkitpvp.api;
+package dev.gabbo.zkitpvp.blocks;
 
 import org.bukkit.block.Block;
 
-public class ReforgedBlock {
-    public ReforgedBlock(Block block, int timer) {
+public class TempBlock {
+    public TempBlock(Block block, int timer) {
         this.block = block;
         this.status = 0;
         this.timer = timer;

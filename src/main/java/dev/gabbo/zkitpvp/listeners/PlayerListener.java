@@ -1,8 +1,8 @@
 package dev.gabbo.zkitpvp.listeners;
 
 import dev.gabbo.zkitpvp.KitPvP;
-import dev.gabbo.zkitpvp.events.BountyClaimEvent;
 import dev.gabbo.zkitpvp.data.PlayerData;
+import dev.gabbo.zkitpvp.events.BountyClaimEvent;
 import dev.gabbo.zkitpvp.events.KillStreakEvent;
 import dev.gabbo.zkitpvp.tasks.GeneralTask;
 import dev.gabbo.zkitpvp.utils.ChatUtils;
@@ -11,7 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -109,7 +108,7 @@ public class PlayerListener implements Listener {
         inventory.setItem(1, null);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
 
@@ -129,20 +128,15 @@ public class PlayerListener implements Listener {
         Player damager = (Player) event.getDamager();
 
         ItemStack hand = damager.getItemInHand();
-        if (hand == null) return;
 
+        if (hand == null) return;
         if (!hand.getType().toString().contains("AXE")) return;
 
         int damage = KitPvP.getFileManager().getConfig().getInt("axe.increment");
 
         PlayerInventory inventory = damaged.getInventory();
-        ItemStack[] stack = new ItemStack[]{inventory.getHelmet(), inventory.getChestplate(), inventory.getLeggings(), inventory.getBoots()};
-
-        for (ItemStack item : stack) {
-            if (item != null && !item.getType().equals(Material.AIR)) {
-                item.setDurability((short) (item.getDurability() + damage));
-            }
-        }
+        Arrays.stream(inventory.getArmorContents()).filter(Objects::nonNull)
+                .forEach(x -> x.setDurability((short) (x.getDurability() + damage)));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -183,21 +177,16 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
-        if (item == null) return;
 
+        if (item == null) return;
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
             return;
 
         Player player = event.getPlayer();
         switch (item.getType()) {
-            case GOLDEN_APPLE:
-                event.setCancelled(true);
-                event.setUseItemInHand(Event.Result.DEFAULT);
-                break;
             case EXP_BOTTLE:
                 event.setCancelled(true);
 
-                Inventory inventory = player.getInventory();
                 Random random = new Random();
 
                 int newExp = 0;
@@ -208,7 +197,7 @@ public class PlayerListener implements Listener {
                 }
 
                 player.giveExp(newExp);
-                inventory.removeItem(item);
+                player.setItemInHand(null);
                 break;
             case ENDER_PEARL:
                 PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
@@ -219,7 +208,8 @@ public class PlayerListener implements Listener {
                 }
 
                 data.inEnderCooldown = true;
-                data.enderTimestamp = System.currentTimeMillis();
+
+                data.endEnderTimestamp = (long) (System.currentTimeMillis() + GeneralTask.enderTimer * 1000L);
 
                 KitPvP.getDataManager().updateData(data);
                 break;
@@ -282,13 +272,12 @@ public class PlayerListener implements Listener {
         Player attacker = (Player) damager;
         PlayerData data = KitPvP.getDataManager().getPlayerData(entity.getUniqueId().toString());
 
-        if (data.lastPlayer != null && data.lastPlayer != attacker) {
-            data.assisters.remove(data.lastPlayer);
-            data.assisters.add(data.lastPlayer);
+        if (data.getLastPlayer() != null && data.getLastPlayer() != attacker) {
+            data.assisters.remove(data.getLastPlayer());
+            data.assisters.add(data.getLastPlayer());
         }
 
-        data.lastPlayer = attacker;
-
+        data.setLastPlayer(attacker);
         KitPvP.getDataManager().updateData(data);
     }
 
@@ -299,7 +288,8 @@ public class PlayerListener implements Listener {
         Player killed = event.getEntity();
         PlayerData data = KitPvP.getDataManager().getPlayerData(killed.getUniqueId().toString());
 
-        data.bounty = 0;
+        data.setBounty(0);
+
         data.streak = 0;
         data.deaths++;
 
@@ -320,19 +310,19 @@ public class PlayerListener implements Listener {
             }
         });
 
-        if (data.lastPlayer != null) {
-            PlayerData killerData = KitPvP.getDataManager().getPlayerData(data.lastPlayer.getUniqueId().toString());
-            if (!data.lastPlayer.hasMetadata("NPC")) {
-                if (data.lastPlayer.getExp() < 0.5f) {
-                    data.lastPlayer.setExp(0.5f);
+        if (data.getLastPlayer() != null) {
+            PlayerData killerData = KitPvP.getDataManager().getPlayerData(data.getLastPlayer().getUniqueId().toString());
+            if (!data.getLastPlayer().hasMetadata("NPC")) {
+                if (data.getLastPlayer().getExp() < 0.5f) {
+                    data.getLastPlayer().setExp(0.5f);
                 }
                 else {
-                    data.lastPlayer.setExp(0.0f);
-                    data.lastPlayer.setLevel(data.lastPlayer.getLevel() + 1);
+                    data.getLastPlayer().setExp(0.0f);
+                    data.getLastPlayer().setLevel(data.getLastPlayer().getLevel() + 1);
                 }
 
-                KitPvP.getEconomy().depositPlayer(data.lastPlayer, killAmount);
-                data.lastPlayer.sendMessage(ChatUtils.getFormattedText("kills.kill").replaceAll("%player%", killed.getName()));
+                KitPvP.getEconomy().depositPlayer(data.getLastPlayer(), killAmount);
+                data.getLastPlayer().sendMessage(ChatUtils.getFormattedText("kills.kill").replaceAll("%player%", killed.getName()));
 
                 boolean giveEffect = KitPvP.getFileManager().getConfig().getBoolean("on-death.give-effect");
                 if (giveEffect) {
@@ -341,27 +331,27 @@ public class PlayerListener implements Listener {
                     int effectStrength = KitPvP.getFileManager().getConfig().getInt("on-death.effect-strength");
                     int effectTime = KitPvP.getFileManager().getConfig().getInt("on-death.effect-time");
 
-                    data.lastPlayer.addPotionEffect(new PotionEffect(PotionEffectType.getByName(effectName), effectTime * 20, effectStrength));
+                    data.getLastPlayer().addPotionEffect(new PotionEffect(PotionEffectType.getByName(effectName), effectTime * 20, effectStrength));
                 }
             }
 
             List<String> messages = KitPvP.getFileManager().getMessages().getStringList("kills.death");
             String selected = messages.get(random.nextInt(messages.size() - 1))
-                    .replaceAll("%killer%", data.lastPlayer.getName()).replaceAll("%player%", killed.getName());
+                    .replaceAll("%killer%", data.getLastPlayer().getName()).replaceAll("%player%", killed.getName());
 
             killed.sendMessage(ChatUtils.getColoredText(selected));
 
-            if (!data.lastPlayer.equals(killed)) {
+            if (!data.getLastPlayer().equals(killed)) {
                 int streak = KitPvP.getFileManager().getConfig().getInt("streak.threshold");
 
                 killerData.kills++;
                 killerData.streak++;
 
                 if (killerData.streak % streak == 0)
-                    Bukkit.getPluginManager().callEvent(new KillStreakEvent(data.lastPlayer, killerData.streak));
+                    Bukkit.getPluginManager().callEvent(new KillStreakEvent(data.getLastPlayer(), killerData.streak));
             }
 
-            data.lastPlayer = null;
+            data.setLastPlayer(null);
             data.assisters.clear();
 
             KitPvP.getDataManager().updateData(killerData);
@@ -399,10 +389,10 @@ public class PlayerListener implements Listener {
 
         int finalbounty = bounty * multiplier;
 
-        data.bounty += finalbounty;
+        data.addBounty(finalbounty);
 
         Bukkit.broadcastMessage(ChatUtils.getFormattedText("bounties.bounty-set")
-                .replaceAll("%bounty%", String.valueOf(data.bounty)).replaceAll("%player%", killer.getName()));
+                .replaceAll("%bounty%", String.valueOf(data.getBounty())).replaceAll("%player%", killer.getName()));
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -410,23 +400,23 @@ public class PlayerListener implements Listener {
         Player killed = event.getEntity();
         PlayerData data = KitPvP.getDataManager().getPlayerData(killed.getUniqueId().toString());
 
-        Player killer = data.lastPlayer;
-        if (killer == null || data.bounty == 0) return;
+        Player killer = data.getLastPlayer();
+        if (killer == null || data.getBounty() == 0) return;
 
         Location location = killed.getLocation();
         if (killer.equals(killed)) return;
 
         Bukkit.broadcastMessage(ChatUtils.getFormattedText("bounties.bounty-claimed")
-                .replaceAll("%bounty%", String.valueOf(data.bounty))
+                .replaceAll("%bounty%", String.valueOf(data.getBounty()))
                 .replaceAll("%player%", killed.getName())
                 .replaceAll("%killer%", killer.getName()));
 
-        if (data.bounty >= 2000) location.getWorld().strikeLightningEffect(location);
-        if (data.bounty >= 5000)
+        if (data.getBounty() >= 2000) location.getWorld().strikeLightningEffect(location);
+        if (data.getBounty() >= 5000)
             Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 4, 1));
 
-        KitPvP.getEconomy().depositPlayer(killer, data.bounty);
-        Bukkit.getPluginManager().callEvent(new BountyClaimEvent(killed, killer, data.bounty));
+        KitPvP.getEconomy().depositPlayer(killer, data.getBounty());
+        Bukkit.getPluginManager().callEvent(new BountyClaimEvent(killed, killer, data.getBounty()));
     }
 
     @EventHandler
@@ -443,7 +433,7 @@ public class PlayerListener implements Listener {
         PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
 
         data.inCombat = true;
-        data.combatTimestamp = System.currentTimeMillis();
+        data.endCombatTimestamp = (long) (System.currentTimeMillis() + GeneralTask.combatTimer * 1000L);
 
         KitPvP.getDataManager().updateData(data);
     }
@@ -475,7 +465,7 @@ public class PlayerListener implements Listener {
         inventory.setArmorContents(new ItemStack[4]);
         inventory.clear();
 
-        Bukkit.getPluginManager().callEvent(new PlayerDeathEvent(entity, entireInventory, 0, "Suca"));
+        Bukkit.getPluginManager().callEvent(new PlayerDeathEvent(entity, entireInventory, 0, "sqrt(-1)"));
 
         Location spawn = (Location) KitPvP.getFileManager().getConfig().get("spawn-location");
         if (spawn == null) spawn = entity.getWorld().getSpawnLocation();
@@ -485,14 +475,12 @@ public class PlayerListener implements Listener {
         Bukkit.getPluginManager().callEvent(new PlayerRespawnEvent(entity, spawn, false));
         Bukkit.getScheduler().runTaskLater(KitPvP.getInstance(), () -> entity.setFireTicks(0), 1L);
 
-        data.enderTimestamp = 0;
-        data.combatTimestamp = 0;
-
-        data.enderTimer = 0;
-        data.combatTimer = 0;
+        data.endEnderTimestamp = 0;
+        data.endCombatTimestamp = 0;
 
         data.atSpawn = true;
         data.inCombat = false;
+        data.inEnderCooldown = false;
 
         KitPvP.getDataManager().updateData(data);
     }
@@ -506,18 +494,11 @@ public class PlayerListener implements Listener {
     }
 
     private boolean checkForCommand(String message, Player player) {
-        if (!message.startsWith("/")) {
-            return false;
-        }
+        if (!message.startsWith("/")) return false;
 
         PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
-        if (!data.inCombat) {
-            return false;
-        }
-
-        if (player.isOp()) {
-            return false;
-        }
+        if (!data.inCombat) return false;
+        if (player.isOp()) return false;
 
         List<String> whitelisted = KitPvP.getFileManager().getConfig().getStringList("combat.allowed-commands");
 

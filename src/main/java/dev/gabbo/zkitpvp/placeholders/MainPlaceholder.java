@@ -23,12 +23,13 @@ public class MainPlaceholder extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
+        long current = System.currentTimeMillis(), endTimestamp, diff;
         PlayerData data = KitPvP.getDataManager().getPlayerData(player.getPlayer().getUniqueId().toString());
         switch (params) {
             case "bounty":
-                return String.valueOf(data.bounty);
+                return String.valueOf(data.getBounty());
             case "bounty_formatted":
-                return formatNumber(data.bounty);
+                return formatNumber(data.getBounty());
             case "kills":
                 return String.valueOf(data.kills);
             case "deaths":
@@ -36,9 +37,35 @@ public class MainPlaceholder extends PlaceholderExpansion {
             case "streak":
                 return String.valueOf(data.streak);
             case "combat":
-                return String.valueOf(Math.floor(data.combatTimer / 100) / 10);
+                if (data.endCombatTimestamp == -1) {
+                    return "0.0";
+                }
+
+                endTimestamp = data.endCombatTimestamp;
+                diff = endTimestamp - current;
+
+                if (diff > 0) {
+                    return String.valueOf(Math.floor(diff / 100) / 10);
+                }
+                else {
+                    data.endCombatTimestamp = -1;
+                    return "0.0";
+                }
             case "enderpearl":
-                return String.valueOf(Math.floor(data.enderTimer / 100) / 10);
+                if (data.endEnderTimestamp == -1) {
+                    return "0.0";
+                }
+
+                endTimestamp = data.endEnderTimestamp;
+                diff = endTimestamp - current;
+
+                if (diff > 0) {
+                    return String.valueOf(Math.floor(diff / 100) / 10);
+                }
+                else {
+                    data.endEnderTimestamp = -1;
+                    return "0.0";
+                }
         }
 
         return null;

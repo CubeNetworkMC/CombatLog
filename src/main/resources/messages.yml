@@ -45,7 +45,7 @@ admin:
   plugin-reloaded: "&7Configurazione ricaricata correttamente."
   bounty-edited: "&7Impostata una taglia di &6&l%bounty% &7su &a%player%&7."
   help-command:
-    - "&bKitPvP Reforged"
+    - "&bzKitPvP"
     - ""
     - "&b/kitpvp reload &7- &fRicarica la configurazione del plugin"
     - "&b/kitpvp setstats <kills/deaths/streak> <player> <value> &7- &fImposta le statistiche di un giocatore"

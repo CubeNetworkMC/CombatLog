@@ -26,7 +26,8 @@ public class SaveTask extends BukkitRunnable {
                 configuration.set("kills", data.kills);
                 configuration.set("deaths", data.deaths);
                 configuration.set("streak", data.streak);
-                configuration.set("bounty", data.bounty);
+                configuration.set("bounty", data.getBounty());
+
                 configuration.set("pickup-arrows", data.pickupArrows);
                 configuration.set("pickup-apples", data.pickupGoldenApple);
 

@@ -40,10 +40,9 @@ public class SetBountyCommand extends Subcommand {
         PlayerData data = KitPvP.getDataManager().getPlayerData(target.getUniqueId().toString());
 
         long bounty = Long.parseLong(value);
-        data.bounty = bounty;
+        data.setBounty(bounty);
 
         KitPvP.getDataManager().updateData(data);
-
         sender.sendMessage(ChatUtils.getFormattedText("admin.bounty-edited")
                 .replaceAll("%bounty%", String.valueOf(bounty)).replaceAll("%player%", target.getName()));
     }
