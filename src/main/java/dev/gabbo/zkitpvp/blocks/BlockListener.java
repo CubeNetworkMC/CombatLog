@@ -17,7 +17,7 @@ import java.util.List;
 public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        PlayerData data = KitPvP.getDataManager().getPlayerData(event.getPlayer().getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(event.getPlayer().getUniqueId());
 
         int height = KitPvP.getFileManager().getConfig().getInt("no-fall.spawn-height");
         Block block = event.getBlockPlaced();
@@ -73,7 +73,7 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        PlayerData data = KitPvP.getDataManager().getPlayerData(event.getPlayer().getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(event.getPlayer().getUniqueId());
         if (data.isBuilder) {
             return;
         }

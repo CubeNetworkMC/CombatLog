@@ -8,11 +8,14 @@ commands:
   kitpvp:
     description: Main command for everything
     aliases: [ kp, zkitpvp ]
-  stats:
-    description: Public command to see player statistics
-    aliases: [ kpstats, statistics, playerstats ]
   spawn:
     description: Teleport player to spawn
   dropsettings:
     description: Command to manage the pickup settings
     aliases: [ drops, drop-settings ]
+  fix:
+    description: Fixes inventory
+    aliases: [ fixall ]
+  giveexp:
+    description: Transfer a speciefied amount of levels to another player
+    aliases: [ givelevels, expgive, paylevels, payexp ]

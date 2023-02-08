@@ -35,6 +35,18 @@ kills:
   assist: "&7Hai aiutato ad uccidere &c%player% &7e hai guadagnato &a$50&7."
   kill: "&7Hai ucciso &c%player% &7e hai guadagnato &a$200&7."
 
+fix:
+  no-permission: "&cNon hai il permesso necessario per eseguire questa azione."
+  repaired: "&7Hai riparato il tuo inventario."
+  not-enough-money: "&cNon hai abbastanza denaro per eseguire questa azione."
+
+giveexp:
+  no-permission: "&cNon hai il permesso necessario per eseguire questa azione."
+  sent: "&7Hai inviato correttamente &e%levels% &7livelli a &a%name%&7."
+  player-not-found: "&cIl giocatore richiesto non è stato trovato."
+  usage: "&c/giveexp <giocatore> <quantità>"
+  not-enough-levels: "&cNon possiedi abbastanza livelli."
+
 admin:
   no-sub-command-found: "&cNon è stato trovato alcun sotto comando con questo nome."
   malformed-command: "&cUso del comando non corretto, per maggiori informazioni esegui /kitpvp."

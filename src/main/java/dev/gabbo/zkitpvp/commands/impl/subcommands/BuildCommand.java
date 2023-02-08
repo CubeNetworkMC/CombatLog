@@ -19,7 +19,7 @@ public class BuildCommand extends Subcommand {
     public void execute(CommandSender sender, List<String> args) {
         Player player = (Player) sender;
 
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
         data.isBuilder = !data.isBuilder;
 
         sender.sendMessage(ChatUtils.getFormattedText("anti-build.build-mode-" + (data.isBuilder ? "on" : "off")));

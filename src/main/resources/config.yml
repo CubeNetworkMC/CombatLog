@@ -14,6 +14,23 @@ combat:
   disabled-in-worlds:
     - disabled-world
 
+fix:
+  # Set to 0 to remove the price
+  cost: 2000
+
+  # The material of the item
+  item-material: COMPASS
+
+  # The item display name
+  item-display-name: "&7Ripara il tuo inventario"
+
+  # The lore of the item
+  item-lore:
+    - "&7Clicca il bottone per riparare"
+    - "&7il tuo inventario."
+    - ""
+    - "&7Prezzo: &f$2000"
+
 ender-pearl:
   # The amount of time to wait before being able to throw another ender pearl
   timer: 15.0
@@ -43,6 +60,13 @@ on-join:
 
   # The command to execute to give the kit
   kit-command: "kit %player% base"
+
+chat:
+  # If we should enable this feature
+  enabled: true
+
+  # The format of the message, you can use PlaceholderAPI placeholders too!
+  format: "&7%player-name%: &f%message%"
 
 on-death:
   # All the commands to execute when a player die
@@ -102,13 +126,13 @@ no-fall:
 
 bounties:
   # The chance of getting the bounty
-  chance: 40
+  chance: 30
 
   # The minimum bounty
-  minimum: 8
+  minimum: 1
 
   # The maximum bounty
-  maximum: 13
+  maximum: 10
 
   # The bounty multiplier
   multiplier: 100

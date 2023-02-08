@@ -43,7 +43,7 @@ public class SetStatsCommand extends Subcommand {
         }
 
         Player player = Bukkit.getPlayer(username);
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
 
         switch (command) {
             case "kills":

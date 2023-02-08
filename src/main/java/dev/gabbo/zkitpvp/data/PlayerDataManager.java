@@ -4,24 +4,25 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerDataManager {
 
-    public PlayerData getPlayerData(String player) {
-        PlayerData data = filter(playerDataList, player);
+    public PlayerData getPlayerData(UUID uuid) {
+        PlayerData data = filter(playerDataList, uuid);
 
         if (data == null) {
-            playerDataList.add(new PlayerData(player));
-            return getPlayerData(player);
+            playerDataList.add(new PlayerData(uuid));
+            return getPlayerData(uuid);
         }
 
         return data;
     }
 
-    private PlayerData filter(List<PlayerData> list, String player) {
+    private PlayerData filter(List<PlayerData> list, UUID uuid) {
         for (int i = 0; i < list.size(); i++) {
             PlayerData data = playerDataList.get(i);
-            if (data != null && data.getPlayer().equals(player)) {
+            if (data != null && data.getUUID().equals(uuid)) {
                 return data;
             }
         }
@@ -30,7 +31,7 @@ public class PlayerDataManager {
     }
 
     public PlayerData getPlayerData(Player player) {
-        return getPlayerData(player.getUniqueId().toString());
+        return getPlayerData(player.getUniqueId());
     }
 
     public List<PlayerData> getAllData() {
@@ -39,7 +40,7 @@ public class PlayerDataManager {
 
     public void updateData(PlayerData data) {
         if (data == null) return;
-        PlayerData playerData = filter(playerDataList, data.getPlayer());
+        PlayerData playerData = filter(playerDataList, data.getUUID());
 
         playerDataList.remove(playerData);
         playerDataList.add(data);

@@ -1,7 +1,7 @@
 package dev.gabbo.zkitpvp.commands.impl;
 
 import dev.gabbo.zkitpvp.KitPvP;
-import dev.gabbo.zkitpvp.commands.api.EnumCommand;
+import dev.gabbo.zkitpvp.commands.api.KitPvPCommand;
 import dev.gabbo.zkitpvp.data.PlayerData;
 import dev.gabbo.zkitpvp.inventory.InventoryMaker;
 import dev.gabbo.zkitpvp.items.ItemMaker;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
-public class DropSettingsCommand extends EnumCommand {
+public class DropSettingsCommand extends KitPvPCommand {
 
     public DropSettingsCommand() {
         super(KitPvP.getInstance(), "dropsettings", "kitpvp.commands.dropsettings", true);
@@ -23,7 +23,7 @@ public class DropSettingsCommand extends EnumCommand {
         if (!(sender instanceof Player)) return;
 
         Player player = (Player) sender;
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
 
         ItemMaker apple = new ItemMaker(Material.GOLDEN_APPLE)
                 .addLoreLine(KitPvP.getFileManager().getMessages().getString("drop-settings.enabled")
@@ -37,7 +37,7 @@ public class DropSettingsCommand extends EnumCommand {
                 .addItemStack(12, apple.get())
                 .addAction(12, (event) -> {
                     Inventory clickedInventory = event.getClickedInventory();
-                    PlayerData clickerData = KitPvP.getDataManager().getPlayerData(event.getWhoClicked().getUniqueId().toString());
+                    PlayerData clickerData = KitPvP.getDataManager().getPlayerData(event.getWhoClicked().getUniqueId());
 
                     clickerData.pickupGoldenApple = !clickerData.pickupGoldenApple;
 
@@ -58,7 +58,7 @@ public class DropSettingsCommand extends EnumCommand {
                 .addItemStack(14, arrow.get())
                 .addAction(14, (event) -> {
                     Inventory clickedInventory = event.getClickedInventory();
-                    PlayerData clickerData = KitPvP.getDataManager().getPlayerData(event.getWhoClicked().getUniqueId().toString());
+                    PlayerData clickerData = KitPvP.getDataManager().getPlayerData(event.getWhoClicked().getUniqueId());
 
                     clickerData.pickupArrows = !clickerData.pickupArrows;
 

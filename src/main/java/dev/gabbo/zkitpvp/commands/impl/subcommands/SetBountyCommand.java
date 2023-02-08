@@ -37,7 +37,7 @@ public class SetBountyCommand extends Subcommand {
         }
 
         Player target = Bukkit.getPlayer(username);
-        PlayerData data = KitPvP.getDataManager().getPlayerData(target.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(target.getUniqueId());
 
         long bounty = Long.parseLong(value);
         data.setBounty(bounty);

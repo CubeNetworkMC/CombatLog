@@ -2,14 +2,14 @@ package dev.gabbo.zkitpvp.commands.impl;
 
 import dev.gabbo.zkitpvp.KitPvP;
 import dev.gabbo.zkitpvp.commands.api.CommandHandler;
-import dev.gabbo.zkitpvp.commands.api.EnumCommand;
+import dev.gabbo.zkitpvp.commands.api.KitPvPCommand;
 import dev.gabbo.zkitpvp.commands.impl.subcommands.*;
 import dev.gabbo.zkitpvp.utils.ChatUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class MainCommand extends EnumCommand {
+public class MainCommand extends KitPvPCommand {
 
     public MainCommand() {
         super(KitPvP.getInstance(), "kitpvp", "kitpvp.commands.admin", false);

@@ -6,36 +6,33 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class SaveTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < KitPvP.getDataManager().getAllData().size(); i++) {
-            if (i >= KitPvP.getDataManager().getAllData().size()) break;
+        List<PlayerData> allData = new ArrayList<>(KitPvP.getDataManager().getAllData());
+        allData.forEach(data -> {
+            UUID uuid = data.getUUID();
 
-            try {
-                PlayerData data = KitPvP.getDataManager().getAllData().get(i);
-                if (data == null) return;
+            YamlConfiguration configuration = new YamlConfiguration();
+            File file = new File(KitPvP.getInstance().getDataFolder().getAbsolutePath() + "/data", uuid.toString());
 
-                String player = data.getPlayer();
+            configuration.set("balance", data.getBalance());
 
-                YamlConfiguration configuration = new YamlConfiguration();
-                File file = new File(KitPvP.getInstance().getDataFolder().getAbsolutePath() + "/data", player);
+            configuration.set("kills", data.kills);
+            configuration.set("deaths", data.deaths);
+            configuration.set("streak", data.streak);
+            configuration.set("bounty", data.getBounty());
 
-                configuration.set("kills", data.kills);
-                configuration.set("deaths", data.deaths);
-                configuration.set("streak", data.streak);
-                configuration.set("bounty", data.getBounty());
+            configuration.set("pickup-arrows", data.pickupArrows);
+            configuration.set("pickup-apples", data.pickupGoldenApple);
 
-                configuration.set("pickup-arrows", data.pickupArrows);
-                configuration.set("pickup-apples", data.pickupGoldenApple);
-
-                KitPvP.getFileManager().saveFile(configuration, file);
-            } catch (IndexOutOfBoundsException ignored) {
-
-            }
-        }
+            KitPvP.getFileManager().saveFile(configuration, file);
+        });
     }
 
 }

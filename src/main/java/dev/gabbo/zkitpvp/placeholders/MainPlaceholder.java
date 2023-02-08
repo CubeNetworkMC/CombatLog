@@ -24,7 +24,7 @@ public class MainPlaceholder extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         long current = System.currentTimeMillis(), endTimestamp, diff;
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getPlayer().getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getPlayer().getUniqueId());
         switch (params) {
             case "bounty":
                 return String.valueOf(data.getBounty());

@@ -2,9 +2,8 @@ package dev.gabbo.zkitpvp;
 
 import dev.gabbo.zkitpvp.blocks.BlockListener;
 import dev.gabbo.zkitpvp.blocks.BlockTask;
-import dev.gabbo.zkitpvp.commands.impl.DropSettingsCommand;
-import dev.gabbo.zkitpvp.commands.impl.MainCommand;
-import dev.gabbo.zkitpvp.commands.impl.SpawnCommand;
+import dev.gabbo.zkitpvp.commands.api.KitPvPCommand;
+import dev.gabbo.zkitpvp.commands.impl.*;
 import dev.gabbo.zkitpvp.data.PlayerDataManager;
 import dev.gabbo.zkitpvp.inventory.InventoryListener;
 import dev.gabbo.zkitpvp.listeners.PlayerListener;
@@ -27,34 +26,34 @@ public final class KitPvP extends JavaPlugin {
         instance = this;
         fileManager = new FileManager(instance);
 
-        Arrays.asList(new MainCommand(), new SpawnCommand(), new DropSettingsCommand())
-                .forEach(command -> getCommand(command.getName()).setExecutor(command));
+        Arrays.asList(new MainCommand(), new SpawnCommand(), new DropSettingsCommand(), new FixCommand(), new GiveExpCommand())
+                .forEach(KitPvPCommand::registerExecutor);
 
         Arrays.asList(new BlockListener(), new PlayerListener(), new InventoryListener())
-                .forEach(event -> Bukkit.getPluginManager().registerEvents(event, KitPvP.getInstance()));
+                .forEach(event -> Bukkit.getPluginManager().registerEvents(event, this));
 
         dataManager = new PlayerDataManager();
         blockManager = new BlockTask();
 
-        new MainPlaceholder().register();
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new MainPlaceholder().register();
+        }
 
         if (fileManager.getConfig().getBoolean("tab-list.enabled")) {
             Bukkit.getScheduler().runTaskTimer(this, new TabUpdater(), 10L, 10L);
         }
 
-        Bukkit.getScheduler().runTaskTimer(this, saveManager = new SaveTask(), 1L, 1L);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(KitPvP.getInstance(), new GeneralTask(), 2L, 2L);
+        saveManager = new SaveTask();
 
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return;
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, saveManager, 6000L, 6000L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new GeneralTask(), 2L, 2L);
+
+        if (getServer().getPluginManager().isPluginEnabled("Vault")) {
+            RegisteredServiceProvider<Economy> service = getServer().getServicesManager().getRegistration(Economy.class);
+            if (service != null) {
+                economy = service.getProvider();
+            }
         }
-
-        RegisteredServiceProvider<Economy> service = getServer().getServicesManager().getRegistration(Economy.class);
-        if (service == null) {
-            return;
-        }
-
-        economy = service.getProvider();
     }
 
     public void reloadConfiguration() {
@@ -63,6 +62,7 @@ public final class KitPvP extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (saveManager == null) return;
         saveManager.run();
     }
 

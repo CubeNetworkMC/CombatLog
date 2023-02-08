@@ -6,6 +6,7 @@ import dev.gabbo.zkitpvp.events.BountyClaimEvent;
 import dev.gabbo.zkitpvp.events.KillStreakEvent;
 import dev.gabbo.zkitpvp.tasks.GeneralTask;
 import dev.gabbo.zkitpvp.utils.ChatUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -46,7 +47,7 @@ public class PlayerListener implements Listener {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), KitPvP.getFileManager().getConfig().getString("on-join.kit-command").replaceAll("%player%", player.getName()));
         }
 
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
         Location spawn = (Location) KitPvP.getFileManager().getConfig().get("spawn-location");
 
         if (spawn == null) return;
@@ -57,12 +58,23 @@ public class PlayerListener implements Listener {
         KitPvP.getDataManager().updateData(data);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player sender = event.getPlayer();
+        if (!KitPvP.getFileManager().getConfig().getBoolean("chat.enabled", false)) return;
+
+        String format = KitPvP.getFileManager().getConfig().getString("chat.format", "&7%player-name%: &f%message%");
+        String parsed = PlaceholderAPI.setPlaceholders(sender.getPlayer(), format).replaceAll("%player-name%", sender.getName()).replaceAll("%message%", event.getMessage());
+
+        event.setFormat(ChatUtils.getColoredText(parsed));
+    }
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         event.setQuitMessage(null);
 
         Player player = event.getPlayer();
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
 
         if (data.inCombat) executeDeath(player);
     }
@@ -150,7 +162,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
         if (!data.atSpawn) return;
 
         if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
@@ -200,7 +212,7 @@ public class PlayerListener implements Listener {
                 player.setItemInHand(null);
                 break;
             case ENDER_PEARL:
-                PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+                PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
 
                 if (data.inEnderCooldown) {
                     event.setCancelled(true);
@@ -255,7 +267,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDamagePlayer(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
         if (!(event.getEntity() instanceof Player)) return;
@@ -270,7 +282,7 @@ public class PlayerListener implements Listener {
         if (damager.equals(entity)) return;
 
         Player attacker = (Player) damager;
-        PlayerData data = KitPvP.getDataManager().getPlayerData(entity.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(entity.getUniqueId());
 
         if (data.getLastPlayer() != null && data.getLastPlayer() != attacker) {
             data.assisters.remove(data.getLastPlayer());
@@ -286,7 +298,7 @@ public class PlayerListener implements Listener {
         Random random = new Random();
 
         Player killed = event.getEntity();
-        PlayerData data = KitPvP.getDataManager().getPlayerData(killed.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(killed.getUniqueId());
 
         data.setBounty(0);
 
@@ -311,7 +323,7 @@ public class PlayerListener implements Listener {
         });
 
         if (data.getLastPlayer() != null) {
-            PlayerData killerData = KitPvP.getDataManager().getPlayerData(data.getLastPlayer().getUniqueId().toString());
+            PlayerData killerData = KitPvP.getDataManager().getPlayerData(data.getLastPlayer().getUniqueId());
             if (!data.getLastPlayer().hasMetadata("NPC")) {
                 if (data.getLastPlayer().getExp() < 0.5f) {
                     data.getLastPlayer().setExp(0.5f);
@@ -374,7 +386,7 @@ public class PlayerListener implements Listener {
             inventory.addItem(new ItemStack(Material.valueOf(KitPvP.getFileManager().getConfig().getString("streak.item-name")), 1));
         }
 
-        PlayerData data = KitPvP.getDataManager().getPlayerData(killer.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(killer.getUniqueId());
 
         int chance = KitPvP.getFileManager().getConfig().getInt("bounties.chance");
         int chosen = random.nextInt(100);
@@ -398,7 +410,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBountyClaim(PlayerDeathEvent event) {
         Player killed = event.getEntity();
-        PlayerData data = KitPvP.getDataManager().getPlayerData(killed.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(killed.getUniqueId());
 
         Player killer = data.getLastPlayer();
         if (killer == null || data.getBounty() == 0) return;
@@ -422,7 +434,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerPickup(PlayerPickupItemEvent event) {
         ItemStack item = event.getItem().getItemStack();
-        PlayerData data = KitPvP.getDataManager().getPlayerData(event.getPlayer().getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(event.getPlayer().getUniqueId());
 
         if (item.getType().equals(Material.GOLDEN_APPLE) && !item.isSimilar(new ItemStack(Material.GOLDEN_APPLE, item.getAmount(), (short) 1)) && !data.pickupGoldenApple)
             event.setCancelled(true);
@@ -430,7 +442,7 @@ public class PlayerListener implements Listener {
     }
 
     private void updateData(Player player) {
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
 
         data.inCombat = true;
         data.endCombatTimestamp = (long) (System.currentTimeMillis() + GeneralTask.combatTimer * 1000L);
@@ -439,7 +451,7 @@ public class PlayerListener implements Listener {
     }
 
     private void executeDeath(Player entity) {
-        PlayerData data = KitPvP.getDataManager().getPlayerData(entity.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(entity.getUniqueId());
 
         entity.closeInventory();
         entity.getActivePotionEffects().forEach(effect -> entity.removePotionEffect(effect.getType()));
@@ -496,7 +508,7 @@ public class PlayerListener implements Listener {
     private boolean checkForCommand(String message, Player player) {
         if (!message.startsWith("/")) return false;
 
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
         if (!data.inCombat) return false;
         if (player.isOp()) return false;
 

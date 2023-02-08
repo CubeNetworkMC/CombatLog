@@ -9,14 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class EnumCommand implements CommandExecutor {
+public abstract class KitPvPCommand implements CommandExecutor {
 
     private String noPermissionMsg, onlyPlayerMsg, noSubCommandFoundMsg;
     private final String name, permission;
     private final boolean playerOnly;
     private final JavaPlugin plugin;
 
-    public EnumCommand(JavaPlugin plugin, String name, String permission, boolean playerOnly) {
+    public KitPvPCommand(JavaPlugin plugin, String name, String permission, boolean playerOnly) {
         this.plugin = plugin;
         this.name = name;
         this.permission = permission;
@@ -65,8 +65,7 @@ public abstract class EnumCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 0) execute(sender, Arrays.asList(args));
-        else {
+        if (args.length > 0 && CommandHandler.getSubCommands(this).size() > 0) {
             List<Subcommand> subcommands = CommandHandler.getSubCommands(this);
             Subcommand subcommand = subcommands.stream().filter(sub -> sub.getName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
 
@@ -84,6 +83,7 @@ public abstract class EnumCommand implements CommandExecutor {
 
             subcommand.execute(sender, Arrays.asList(args));
         }
+        else execute(sender, Arrays.asList(args));
         return true;
     }
 }

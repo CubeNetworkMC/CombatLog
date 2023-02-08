@@ -1,7 +1,7 @@
 package dev.gabbo.zkitpvp.commands.impl;
 
 import dev.gabbo.zkitpvp.KitPvP;
-import dev.gabbo.zkitpvp.commands.api.EnumCommand;
+import dev.gabbo.zkitpvp.commands.api.KitPvPCommand;
 import dev.gabbo.zkitpvp.data.PlayerData;
 import dev.gabbo.zkitpvp.utils.ChatUtils;
 import org.bukkit.Location;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class SpawnCommand extends EnumCommand {
+public class SpawnCommand extends KitPvPCommand {
     public SpawnCommand() {
         super(KitPvP.getInstance(), "spawn", "kitpvp.commands.spawn", true);
 
@@ -27,7 +27,7 @@ public class SpawnCommand extends EnumCommand {
             return;
         }
 
-        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId().toString());
+        PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
         data.atSpawn = true;
 
         KitPvP.getDataManager().updateData(data);
