@@ -2,11 +2,10 @@ package dev.gabbo.zkitpvp.tasks;
 
 import dev.gabbo.zkitpvp.KitPvP;
 import dev.gabbo.zkitpvp.data.PlayerData;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class GeneralTask extends BukkitRunnable {
+public class GeneralTask implements Runnable {
 
-    public static final double combatTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
+    public static final double combatTimer = KitPvP.getFileManager().getConfig().getDouble("combat-log.timer");
     public static final double enderTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
 
     @Override

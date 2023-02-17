@@ -43,8 +43,6 @@ public class BlockListener implements Listener {
         String blocker = KitPvP.getFileManager().getConfig().getString("block-manager.blocking-block");
         if (blockString.equals(blocker)) {
             int cooldown = KitPvP.getFileManager().getConfig().getInt("block-manager.block-timer");
-
-            block.setType(Material.valueOf(blocker));
             TempBlock reforgedBlock = new TempBlock(block, cooldown);
 
             KitPvP.getBlockManager().addBlock(reforgedBlock);

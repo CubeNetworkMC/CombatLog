@@ -18,18 +18,21 @@ fix:
   # Set to 0 to remove the price
   cost: 2000
 
-  # The material of the item
-  item-material: COMPASS
+drop-settings:
+  # List of rows for the
+  lore:
+    - "&7 "
+    - "&7Clicca qui per attivare o"
+    - "&7disattivare la raccolta di"
+    - "&7questo drop."
+    - "&7 "
+    - "&fStato: %enabled%"
 
-  # The item display name
-  item-display-name: "&7Ripara il tuo inventario"
+  # The replacement for placeholder "%enabled%" if the result is true
+  enabled-text: "&attivato"
 
-  # The lore of the item
-  item-lore:
-    - "&7Clicca il bottone per riparare"
-    - "&7il tuo inventario."
-    - ""
-    - "&7Prezzo: &f$2000"
+  # The replacement for placeholder "%enabled%" if the result is false
+  disabled-text: "&cdisattivato"
 
 ender-pearl:
   # The amount of time to wait before being able to throw another ender pearl
@@ -44,14 +47,14 @@ tab-list:
     - " "
     - " &b&lKITPVP"
     - " "
-    - " &fOnline &7» &b%online% &8- &fPing &7» &b%ping%"
+    - " &fOnline: &b%online% &8- &fPing: &b%ping%"
     - " "
 
   # The lower part of the TAB list
   footer:
     - " "
-    - " &fDiscord &7» &bdsc.gg/randomgang "
-    - " &fAuthor &7» &b@ImGqbbo#9549 "
+    - " &fDiscord: &bdsc.gg/randomgang "
+    - " &fAuthor: &b@ImGqbbo#9549 "
     - " "
 
 on-join:

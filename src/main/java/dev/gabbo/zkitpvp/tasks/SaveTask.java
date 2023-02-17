@@ -3,14 +3,13 @@ package dev.gabbo.zkitpvp.tasks;
 import dev.gabbo.zkitpvp.KitPvP;
 import dev.gabbo.zkitpvp.data.PlayerData;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class SaveTask extends BukkitRunnable {
+public class SaveTask implements Runnable {
 
     @Override
     public void run() {

@@ -8,15 +8,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class ItemMaker implements Supplier<ItemStack> {
 
-    private ItemStack itemStack;
-    private ItemMeta itemMeta;
-    private List<String> lore;
+    private final ItemStack itemStack;
+    private final ItemMeta itemMeta;
+    private final List<String> lore;
 
     public ItemMaker(Material material) {
         this.lore = new ArrayList<>();
@@ -64,13 +63,8 @@ public class ItemMaker implements Supplier<ItemStack> {
         return this.lore;
     }
 
-    public ItemMaker setLore(String... lines) {
-        setLore(Arrays.asList(lines));
-        return this;
-    }
-
     public ItemMaker setLore(List<String> lines) {
-        this.lore = lines;
+        lines.forEach(line -> this.lore.add(ChatUtils.getColoredText(line)));
         return this;
     }
 

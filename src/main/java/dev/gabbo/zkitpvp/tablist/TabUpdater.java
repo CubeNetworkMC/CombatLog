@@ -3,9 +3,8 @@ package dev.gabbo.zkitpvp.tablist;
 import dev.gabbo.zkitpvp.KitPvP;
 import dev.gabbo.zkitpvp.utils.ChatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class TabUpdater extends BukkitRunnable {
+public class TabUpdater implements Runnable {
 
     @Override
     public void run() {

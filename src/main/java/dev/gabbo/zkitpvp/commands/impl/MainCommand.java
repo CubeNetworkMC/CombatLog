@@ -15,7 +15,7 @@ public class MainCommand extends KitPvPCommand {
         super(KitPvP.getInstance(), "kitpvp", "kitpvp.commands.admin", false);
 
         setNoSubCommandFoundMessage(ChatUtils.getFormattedText("admin.no-sub-command-found"));
-        setNoPermissionMessage(ChatUtils.getColoredText("&7Running &bKitPvP Reforged &7version &a1.1 &7by &cImGqbbo"));
+        setNoPermissionMessage(ChatUtils.getColoredText("&7Running &bKitPvP Reforged &7version &a1.2.1 &7by &cImGqbbo"));
 
         CommandHandler.addSubCommand(this, new SetStatsCommand());
         CommandHandler.addSubCommand(this, new SetSpawnCommand());

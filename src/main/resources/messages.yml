@@ -22,9 +22,6 @@ stats:
   streak-edited: "&7Streak modificata per &7%player%."
   broadcast-streak: "&a%player% &7ha raggiunto una serie di uccisioni pari a &c%streak%&7!"
 
-drop-settings:
-  enabled: "&7Attivato &8» &a%enabled%"
-
 kills:
   default-death: "&b%player% &7è morto."
   death:

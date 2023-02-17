@@ -16,8 +16,7 @@ public class BlockTask {
     private final List<TempBlock> blockList = new ArrayList<>();
 
     public BlockTask() {
-        Bukkit.getScheduler().runTaskTimer(KitPvP.getInstance(), () ->
-        {
+        Bukkit.getScheduler().runTaskTimer(KitPvP.getInstance(), () -> {
             for (int i = 0; i < blockList.size(); i++) {
                 TempBlock block = blockList.get(i);
                 block.timer = Math.floor((block.timer - 0.1) * 10) / 10;

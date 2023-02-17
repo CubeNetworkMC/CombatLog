@@ -45,7 +45,7 @@ public final class KitPvP extends JavaPlugin {
 
         saveManager = new SaveTask();
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, saveManager, 6000L, 6000L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, saveManager, 600L, 600L);
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, new GeneralTask(), 2L, 2L);
 
         if (getServer().getPluginManager().isPluginEnabled("Vault")) {

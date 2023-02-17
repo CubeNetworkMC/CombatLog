@@ -24,8 +24,6 @@ public class FixCommand extends KitPvPCommand {
         int price = KitPvP.getFileManager().getConfig().getInt("fix.cost", 0);
         double balance = KitPvP.getEconomy().getBalance(player);
 
-        player.sendMessage(String.valueOf(balance));
-
         if (balance < price) {
             player.sendMessage(ChatUtils.getFormattedText("fix.not-enough-money"));
             return;
