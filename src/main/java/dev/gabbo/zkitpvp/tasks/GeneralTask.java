@@ -5,7 +5,7 @@ import dev.gabbo.zkitpvp.data.PlayerData;
 
 public class GeneralTask implements Runnable {
 
-    public static final double combatTimer = KitPvP.getFileManager().getConfig().getDouble("combat-log.timer");
+    public static final double combatTimer = KitPvP.getFileManager().getConfig().getDouble("combat.timer");
     public static final double enderTimer = KitPvP.getFileManager().getConfig().getDouble("ender-pearl.timer");
 
     @Override

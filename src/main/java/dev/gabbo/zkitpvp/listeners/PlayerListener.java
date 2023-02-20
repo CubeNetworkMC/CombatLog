@@ -50,8 +50,6 @@ public class PlayerListener implements Listener {
         PlayerData data = KitPvP.getDataManager().getPlayerData(player.getUniqueId());
         Location spawn = (Location) KitPvP.getFileManager().getConfig().get("spawn-location");
 
-        if (spawn == null) return;
-
         player.teleport(spawn);
         data.atSpawn = true;
 
@@ -64,9 +62,9 @@ public class PlayerListener implements Listener {
         if (!KitPvP.getFileManager().getConfig().getBoolean("chat.enabled", false)) return;
 
         String format = KitPvP.getFileManager().getConfig().getString("chat.format", "&7%player-name%: &f%message%");
-        String parsed = PlaceholderAPI.setPlaceholders(sender.getPlayer(), format).replaceAll("%player-name%", sender.getName()).replaceAll("%message%", event.getMessage());
+        String parsed = ChatUtils.getColoredText(PlaceholderAPI.setPlaceholders(sender.getPlayer(), format));
 
-        event.setFormat(ChatUtils.getColoredText(parsed));
+        event.setFormat(parsed.replaceAll("%player-name%", "%s").replaceAll("%message%", "%s"));
     }
 
     @EventHandler
@@ -234,15 +232,15 @@ public class PlayerListener implements Listener {
         if (!(event.getEntity() instanceof Player)) return;
 
         Player entity = (Player) event.getEntity();
+        if (entity.getHealth() - event.getFinalDamage() > 0) {
+            updateData(entity);
+        }
+
         if (damager instanceof Projectile) {
             damager = (Entity) ((Projectile) damager).getShooter();
         }
 
         if (!(damager instanceof Player)) return;
-
-        if (entity.getHealth() - event.getFinalDamage() > 0) {
-            updateData(entity);
-        }
 
         updateData((Player) damager);
     }
@@ -428,7 +426,7 @@ public class PlayerListener implements Listener {
             Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 4, 1));
 
         KitPvP.getEconomy().depositPlayer(killer, data.getBounty());
-        Bukkit.getPluginManager().callEvent(new BountyClaimEvent(killed, killer, data.getBounty()));
+        Bukkit.getPluginManager().callEvent(new BountyClaimEvent(killed, killer, killed.getLocation(), data.getBounty()));
     }
 
     @EventHandler
@@ -487,8 +485,8 @@ public class PlayerListener implements Listener {
         Bukkit.getPluginManager().callEvent(new PlayerRespawnEvent(entity, spawn, false));
         Bukkit.getScheduler().runTaskLater(KitPvP.getInstance(), () -> entity.setFireTicks(0), 1L);
 
-        data.endEnderTimestamp = 0;
-        data.endCombatTimestamp = 0;
+        data.endEnderTimestamp = -1;
+        data.endCombatTimestamp = -1;
 
         data.atSpawn = true;
         data.inCombat = false;
