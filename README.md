@@ -5,3 +5,5 @@ If you like the project and want to support it please leave a star on the GitHub
 # Placeholders
 The plugin supports PlaceholderAPI and register the following placeholders
 * `%kitpvp_combat%` - The player combat cooldown
+
+Credits goes to ![ImGqbbo](https://github.com/ImGqbbo) with ![zKitPvP](https://github.com/ImGqbbo/zKitPvP)
